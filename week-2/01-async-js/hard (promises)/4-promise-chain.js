@@ -6,19 +6,47 @@
  */
 
 function wait1(t) {
-
+    return new Promise((resolve)=>{
+        setTimeout(()=>{
+            resolve(`wait1 resolved after ${t} seconds`)
+        },t)
+    })    
 }
 
 function wait2(t) {
-
+    return new Promise((resolve)=>{
+        setTimeout(()=>{
+            resolve(`wait2 resolved after ${t} seconds`)
+        },t)
+    })    
 }
 
 function wait3(t) {
-
+    return new Promise((resolve)=>{
+        setTimeout(()=>{
+            resolve(`wait3 resolved after ${t} seconds`)
+        },t)
+    })    
 }
 
-function calculateTime(t1, t2, t3) {
 
-}
+wait1(1000)
+.then((value)=>{ 
+    console.log(value);
+    return wait2(2000)
+})
+.then((value)=>{
+    console.log(value);
+    return wait3(4000)
+})
+.then((value) => {
+    console.log(value);
+    console.log("All functions executed sequentially.");
+})
+.catch(error => {
+    console.error("An error occurred:", error);
+});
 
-module.exports = calculateTime;
+
+
+// module.exports = calculateTime;
