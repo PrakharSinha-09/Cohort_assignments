@@ -17,8 +17,9 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 
+const pathOfFile=path.join(__dirname,'/files')
 app.get('/files', function (req, res) {
-    fs.readdir(path.join(__dirname, './files/'), (err, files) => {
+    fs.readdir(pathOfFile, (err, files) => {
     if (err) {
         return res.status(500).json({ error: 'Failed to retrieve files' });
     }

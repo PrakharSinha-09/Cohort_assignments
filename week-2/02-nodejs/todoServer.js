@@ -45,5 +45,78 @@
   const app = express();
   
   app.use(bodyParser.json());
+
+  //I'll be using an array of lets say a todo to do operations on the todos.
+
+  let todos=[
+    {
+      id:34245435353,
+      title: "pweprewr",
+      description:"sdfwer wftw wr  wf"
+    }
+  ]
+
+  //First endpoint : getting all the todos
+  app.get('/todos',(req,res)=>{
+    if(todos.length!==0){
+      res.status(200).json(todos);
+    }
+    else{
+      res.status(404).json({"error":"Not Found!"});
+    }
+  })
   
+  //Second endpoint : Retrieving a specific todo item by ID
+  app.get('/todos/:id',(req,res)=>{
+    if(req.params.id){
+      const todo=todos.find((todo) => todo.id===parseInt(req.params.id))
+      res.status(200).json(todo);
+    }
+    else{
+      res.status(404).json({"error":"Not Found!"});
+    }
+  })
+
+  //Third endpoint : Creating a new todo item
+  app.post('/todos',(req,res)=>{
+    const newTodo={
+      id:Math.floor(Math.random() * 1000000),
+      title:req.body.title,
+      description:req.body.description
+    }
+    todos.push(newTodo)
+    res.status(201).json({"Success":"Todo created successfully!"})
+  })
+
+  //Fourth endpoint : Updating an existing todo item by its id.
+  app.put('/todos/:id',(req,res)=>{
+    const todoId=parseInt(req.params.id)
+    const todoIndex=todos.findIndex(todo => todo.id===todoId)
+    const updated={
+      id:todoId,
+      title:req.body.title,
+      description:req.body.description
+    }
+
+    todos[todoIndex]=updated
+    res.json(updated)
+  })
+
+  //Fifth Endpoint : Deleting a todo item with its id.
+  app.delete('/todos/:id',(req,res)=>{
+    const todoId=parseInt(req.params.id)
+    if(todoId){
+      const todoIndex=todos.findIndex(todo => todo.id===todoId)
+      todos.splice(todoIndex,1);
+      res.json(200).json({"success":"todo deleted successfully!"})
+    }
+    else{
+      res.json(404).json({"error":"todo doesn't exist"})
+    }
+
+  })
+
+  app.all('*', (req, res) => {
+    res.status(404).send('Route not found');
+});
   module.exports = app;
